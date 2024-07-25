@@ -1,9 +1,9 @@
 name: cfip
 
 on:
-  schedule:
-    - cron: '00 2 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '0 */7 * * *'  # 每七小时运行一次，可以根据需求调整时间
 
 permissions:
   contents: write
@@ -36,12 +36,12 @@ jobs:
       run: pip install -r ./requirements.txt
 
     - name: 运行 main.py
-      run: python3 ./main.py
+      run: python main.py
 
     - name: 提交并推送更改
       run: |
-        git config --local user.email "zimamaxiaoan@outlook.com"
-        git config --local user.name "hhyyx1"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add .
-        git diff --exit-code || git commit -m "更新结果"
+        git commit -am "更新结果"
         git push origin main
