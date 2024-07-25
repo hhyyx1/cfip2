@@ -4,49 +4,43 @@ on:
   schedule:
     - cron: '00 2 * * *'
 
-# on: [push]
-
-env:
-  # Setting an environment variable with the value of a configuration variable
-  downloadurl: ${{ vars.DOWNLOADURL }}
-
 permissions:
   contents: write
-      
+
 jobs:
   update_data:
     runs-on: ubuntu-latest
 
     steps:
-    - run: echo "start update"
-        
-    - name: Check my code
-      uses: actions/checkout@main
-    
-    - name: Remove old data
+    - run: echo "开始更新"
+
+    - name: 检出代码
+      uses: actions/checkout@v2
+
+    - name: 删除旧数据
       run: rm -rf ./ip*
-    
-    - name: Get source data
+
+    - name: 获取源数据
       run: |
-        wget -N $downloadurl -O ip.zip
+        wget -N https://zip.baipiao.eu.org -O ip.zip
         unzip ip.zip -d ./ips
         rm ip.zip
 
-    - name: Set up Python
-      uses: actions/setup-python@main
+    - name: 设置 Python
+      uses: actions/setup-python@v2
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
+    - name: 安装依赖
       run: pip install -r ./requirements.txt
 
-    - name: Run main.py
+    - name: 运行 main.py
       run: python main.py
-      
-    - name: Commit and push changes
+
+    - name: 提交并推送更改
       run: |
-        git config --local user.email "zimamaxiaoan@outlook.com"
-        git config --local user.name "hhyyx1"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add .
-        git diff --exit-code && git commit -m "update result"
+        git diff --exit-code || git commit -m "更新结果"
         git push origin main
