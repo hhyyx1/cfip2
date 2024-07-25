@@ -45,8 +45,8 @@ jobs:
       
     - name: Commit and push changes
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "zimamaxiaoan@outlook.com"
+        git config --local user.name "hhyyx1"
         git add .
         git diff --exit-code && git commit -m "update result"
         git push origin main
